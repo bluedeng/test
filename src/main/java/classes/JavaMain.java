@@ -16,6 +16,17 @@ import java.util.stream.Collectors;
 
 public class JavaMain {
 
+    public static Long calSum(Integer start, Integer right) {
+        Long sum = 0L;
+        if (start > right) {
+            return 0L;
+        }
+        for (int i = start; i <= right; i++) {
+            sum += i;
+        }
+        return sum;
+    }
+
     public static void main(String[] args) throws Exception {
         System.out.println("Hello from java!");
 
@@ -60,6 +71,7 @@ public class JavaMain {
         System.out.println("Exception cannot stop us!");
          */
 
+        /*
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
@@ -69,5 +81,15 @@ public class JavaMain {
         System.out.println(list.stream().map(integer -> integer * 2).collect(Collectors.toList()).getClass());
         //System.out.println(BasicCalUtils.sumTheList(list).getClass());
         //BasicCalUtils.sumTheList(list).forEach(System.out::println);
+        */
+
+        Long t1 = System.nanoTime();
+        System.out.println(calSum(0, 999999999));
+        Long t2 = System.nanoTime();
+        CalculateSum sum = new CalculateSum(0, 999999999);
+        sum.fork();
+        System.out.println(sum.join());
+        Long t3 = System.nanoTime();
+        System.out.println("" + (t2 - t1) + "\n" + (t3 - t2) + "\n" + (double)(t3 - t2) / (t2 - t1));
     }
 }
