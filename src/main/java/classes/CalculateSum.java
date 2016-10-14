@@ -7,10 +7,10 @@ import java.util.concurrent.RecursiveTask;
  **/
 public class CalculateSum extends RecursiveTask<Long> {
 
-    private Integer start;
-    private Integer end;
+    private Long start;
+    private Long end;
 
-    public CalculateSum(Integer start, Integer end) {
+    public CalculateSum(Long start, Long end) {
         this.start = start;
         this.end = end;
     }
@@ -21,11 +21,11 @@ public class CalculateSum extends RecursiveTask<Long> {
         if (end < start) {
             return 0L;
         } else if (end - start <= 100) {
-            for(int i = start; i <= end; i++) {
+            for(Long i = start; i <= end; i++) {
                 sum += i;
             }
         } else {
-            Integer mid = (start + end) / 2;
+            Long mid = (start + end) / 2;
             CalculateSum left = new CalculateSum(start, mid);
             left.fork();
             CalculateSum right = new CalculateSum(mid + 1, end);
