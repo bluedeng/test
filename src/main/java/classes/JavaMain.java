@@ -113,5 +113,6 @@ public class JavaMain {
         //System.out.println(BasicCalUtils.sumTheList(list).getClass());
         //BasicCalUtils.sumTheList(list).forEach(System.out::println);
         */
+
     }
 }
