@@ -1,4 +1,4 @@
-import classes.{JavaEmail, JavaPersion}
+import classes.{JavaEmail, JavaPersion, ScalaPerson}
 import Utils.BasicUtils
 import objects.BasicCalUtils
 
@@ -7,24 +7,5 @@ import objects.BasicCalUtils
   */
 object ScalaMain {
   def main(args: Array[String]): Unit = {
-
-    /*
-    val peter = new JavaPersion()
-    println(peter)
-    peter.setName("peter")
-    peter.setAge(32)
-    println(peter)
-    */
-
-    /*
-    val email = new JavaEmail()
-    println(email)
-    email.setName("zhushichong")
-    email.setDomain("meituan.com")
-    println(email)
-    */
-
-    val sum: Int = BasicUtils.sum(3, 5)
-    println(sum.getClass)
   }
 }

@@ -1,7 +1,6 @@
-package classes;// Copyright (C) 2016 Meituan
-// All rights reserved
+package classes;
 
-import classes.SumTraitWrapper;
+import Utils.BasicUtils;
 import objects.BasicCalUtils;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class JavaMain {
 
-    public static Long calSum(Long start, Long right) {
+    private static Long calSum(Long start, Long right) {
         Long sum = 0L;
         if (start > right) {
             return 0L;
@@ -28,10 +27,7 @@ public class JavaMain {
         return sum;
     }
 
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello from java!");
-
-        /*
+    private static void forkJoinPoolTest() {
         Long start = 0L;
         List<Long> ends = new ArrayList<>();
         ends.add(9L);
@@ -59,60 +55,100 @@ public class JavaMain {
         for (List<Double> list : results) {
             System.out.println(list.stream().reduce(0.0, (a, b) -> a + b) / 20);
         }
-        */
+    }
 
-        /*
+    private static void javaExceptionTest() {
+        try {
+            // codes throw exception
+            List<Integer> list = new ArrayList<>();
+            System.out.println(list.get(0));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        } catch (ArrayStoreException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("over");
+        }
+
+        try {
+            //java 1.7
+            //codes throw exception
+            List<Integer> list = new ArrayList<>();
+            System.out.println(list.get(0));
+        } catch (ArrayIndexOutOfBoundsException | ArrayStoreException e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("over");
+        }
+    }
+
+    private static void javaUtilTest() {
+        System.out.println(BasicUtils.ifElseCheck(4));
+        System.out.println(BasicUtils.switchCheck(2));
+    }
+
+    private static void scalaUtilTest() {
         ScalaPerson peter = new ScalaPerson("peter", 33);
         peter.setAge(32);
         System.out.println(peter);
         System.out.println(peter.getAge());
-        */
 
-        /*
         ScalaEmail email = new ScalaEmail();
         System.out.println(email);
         email.setName("dengtianzhi");
         email.setDomain("meituan.com");
         System.out.println(email);
-        */
 
-        /*
         System.out.println(new Minus().minus(5, 3));
         System.out.println(new SumTraitWrapper().sum(5, 3));
-        */
 
-        /*
         Integer i = BasicCalUtils.sum(new Integer(3), new Integer(5));
         System.out.println(i);
         System.out.println(i.getClass());
         System.out.println(BasicCalUtils.join("Hello, ", "from scala!"));
-        */
 
-        /*
         System.out.println(BasicCalUtils.sumList(1));
         System.out.println(BasicCalUtils.sumList(1, 2, 3));
-        */
 
-        /*
         try {
             BasicCalUtils.exceptionThrower(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("Exception cannot stop us!");
-         */
+    }
 
-        /*
+    private static void scalaTraitTest() {
+        System.out.println(new Compute().minus(3, 5));
+        System.out.println(new Compute().sum(3, 5));
+    }
+
+    private static void collectionOpJavaVsScala() {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
         list.add(3);
-        //list.forEach(System.out::println);
-        //list.stream().map(integer -> integer * 2).forEach(System.out::println);
+        list.forEach(System.out::println);
+        list.stream().map(integer -> integer * 2).forEach(System.out::println);
         System.out.println(list.stream().map(integer -> integer * 2).collect(Collectors.toList()).getClass());
-        //System.out.println(BasicCalUtils.sumTheList(list).getClass());
-        //BasicCalUtils.sumTheList(list).forEach(System.out::println);
-        */
+        System.out.println(BasicCalUtils.sumTheList(list).getClass());
 
+        BasicCalUtils.sumTheList(list).forEach(System.out::println);
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("Hello from java!");
+
+        //forkJoinPoolTest();
+
+        //javaExceptionTest();
+
+        //javaUtilTest();
+
+        //scalaUtilTest();
+
+        //scalaTraitTest();
+
+        //collectionOpJavaVsScala();
     }
 }

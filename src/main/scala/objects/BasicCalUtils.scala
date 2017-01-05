@@ -3,8 +3,7 @@ package objects
 import java.util.NoSuchElementException
 
 import scala.annotation.varargs
-import scala.collection.JavaConversions._
-import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConverters._
 
 /**
   * Created by bluedeng on 2016/10/11.
@@ -32,7 +31,9 @@ object BasicCalUtils {
   }
   */
 
-  def sumTheList(list: java.util.List[Integer]): java.util.List[Int] = {
-    bufferAsJavaList(list.map(_ * 2))
+  implicit def ints2Integers(list: scala.collection.mutable.Buffer[Int]): java.util.List[java.lang.Integer] = list.map(new java.lang.Integer(_)).asJava
+
+  def sumTheList(list: java.util.List[Integer]): java.util.List[java.lang.Integer] = {
+    list.asScala.map(_ * 2)
   }
 }
