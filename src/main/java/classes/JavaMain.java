@@ -32,6 +32,36 @@ public class JavaMain {
         System.out.println("Hello from java!");
 
         /*
+        Long start = 0L;
+        List<Long> ends = new ArrayList<>();
+        ends.add(9L);
+        for (int i = 1; i < 9; i++) {
+            ends.add(ends.get(i - 1) * 10 + 9L);
+        }
+
+        List<List<Double>> results = new ArrayList<>();
+        for (Long end : ends) {
+            List<Double> result = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                Long t1 = System.nanoTime();
+                System.out.println(calSum(start, end));
+                Long t2 = System.nanoTime();
+                System.out.println(new ForkJoinPool().invoke(new CalculateSum(start, end)));
+                Long t3 = System.nanoTime();
+                System.out.println("" + (t2 - t1) + "\n" + (t3 - t2) + "\n" + (double) (t3 - t2) / (t2 - t1));
+                result.add((double) (t3 - t2) / (t2 - t1));
+                System.out.println();
+            }
+            results.add(result);
+            System.out.println();
+        }
+
+        for (List<Double> list : results) {
+            System.out.println(list.stream().reduce(0.0, (a, b) -> a + b) / 20);
+        }
+        */
+
+        /*
         ScalaPerson peter = new ScalaPerson("peter", 33);
         peter.setAge(32);
         System.out.println(peter);
@@ -83,33 +113,5 @@ public class JavaMain {
         //System.out.println(BasicCalUtils.sumTheList(list).getClass());
         //BasicCalUtils.sumTheList(list).forEach(System.out::println);
         */
-
-        Long start = 0L;
-        List<Long> ends = new ArrayList<>();
-        ends.add(9L);
-        for (int i = 1; i < 9; i++) {
-            ends.add(ends.get(i - 1) * 10 + 9L);
-        }
-
-        List<List<Double>> results = new ArrayList<>();
-        for (Long end : ends) {
-            List<Double> result = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-                Long t1 = System.nanoTime();
-                System.out.println(calSum(start, end));
-                Long t2 = System.nanoTime();
-                System.out.println(new ForkJoinPool().invoke(new CalculateSum(start, end)));
-                Long t3 = System.nanoTime();
-                System.out.println("" + (t2 - t1) + "\n" + (t3 - t2) + "\n" + (double) (t3 - t2) / (t2 - t1));
-                result.add((double) (t3 - t2) / (t2 - t1));
-                System.out.println();
-            }
-            results.add(result);
-            System.out.println();
-        }
-
-        for (List<Double> list : results) {
-            System.out.println(list.stream().reduce(0.0, (a, b) -> a + b) / 20);
-        }
     }
 }
