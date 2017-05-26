@@ -20,16 +20,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class JavaFuture {
     public static void main(String[] args) {
         // Callable实现的是有返回值的并发，而Runable实现的是没有返回值的情况
-        Callable<Integer> callable = new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                return ThreadLocalRandom.current().nextInt(100);
-            }
-        };
-
+        Callable<Integer> callable = () -> ThreadLocalRandom.current().nextInt(100);
 
         // one task future.run
-        FutureTask<Integer> future = new FutureTask<Integer>(callable);
+        FutureTask<Integer> future = new FutureTask<>(callable);
         future.run();
 
         printFutureResult(future);
