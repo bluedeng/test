@@ -102,7 +102,7 @@ public class JavaMain {
         System.out.println(new Minus().minus(5, 3));
         System.out.println(new SumTraitWrapper().sum(5, 3));
 
-        Integer i = BasicCalUtils.sum(new Integer(3), new Integer(5));
+        Integer i = BasicCalUtils.sum(3, 5);
         System.out.println(i);
         System.out.println(i.getClass());
         System.out.println(BasicCalUtils.join("Hello, ", "from scala!"));
