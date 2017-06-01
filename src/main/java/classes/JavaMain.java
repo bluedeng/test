@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @created 16/10/11 上午10:07
  */
-
 public class JavaMain {
 
     private static Long calSum(Long start, Long right) {
@@ -35,14 +34,18 @@ public class JavaMain {
             ends.add(ends.get(i - 1) * 10 + 9L);
         }
 
+        System.gc();
+
         List<List<Double>> results = new ArrayList<>();
         for (Long end : ends) {
+            System.out.println("end: " + end + "\n");
+
             List<Double> result = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 10; i++) {
                 Long t1 = System.nanoTime();
                 System.out.println(calSum(start, end));
                 Long t2 = System.nanoTime();
-                System.out.println(new ForkJoinPool().invoke(new CalculateSum(start, end)));
+                System.out.println(ForkJoinPool.commonPool().invoke(new CalculateSum(start, end)));
                 Long t3 = System.nanoTime();
                 System.out.println("" + (t2 - t1) + "\n" + (t3 - t2) + "\n" + (double) (t3 - t2) / (t2 - t1));
                 result.add((double) (t3 - t2) / (t2 - t1));
@@ -54,6 +57,33 @@ public class JavaMain {
 
         for (List<Double> list : results) {
             System.out.println(list.stream().reduce(0.0, (a, b) -> a + b) / 20);
+        }
+    }
+
+    private static void parallelStreamVsRough() {
+        List<Integer> list = new ArrayList<>();
+        int size = 8000;
+        for (int i = 0; i < size; i++) {
+            list.add(i);
+        }
+
+        System.gc();
+
+        while (true) {
+            long nanoTime = System.nanoTime();
+            System.out.println(list.stream().map(integer -> integer * 2).reduce(0, (a, b) -> a > b ? a : b));
+            System.out.println(System.nanoTime() - nanoTime);
+
+            nanoTime = System.nanoTime();
+            List<List<Integer>> listList = new ArrayList<>();
+            for (int i = 0; i < size; i += size / 10) {
+                listList.add(list.subList(i, i + size / 10));
+            }
+            System.out.println(listList.parallelStream()
+                    .map(integers -> integers.stream().map(integer -> integer * 2).reduce(0, (a, b) -> a > b ? a : b))
+                    .reduce(0, (a, b) -> a > b ? a : b));
+            System.out.println(System.nanoTime() - nanoTime);
+            System.out.println("***********");
         }
     }
 
@@ -137,9 +167,11 @@ public class JavaMain {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello from java!");
+        //System.out.println("Hello from java!");
 
         //forkJoinPoolTest();
+
+        //parallelStreamVsRough();
 
         //javaExceptionTest();
 
