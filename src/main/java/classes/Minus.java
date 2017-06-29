@@ -9,6 +9,7 @@ import traites.MinusTrait;
  * @created 2016/10/11 下午4:17
  */
 public class Minus implements MinusTrait {
+
     public int minus(int x, int y) {
         return x - y;
     }

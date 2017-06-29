@@ -1,14 +1,8 @@
 // Copyright (C) 2017 Meituan
 // All rights reserved
-package classes;
+package classes.future;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class JavaFuture {
     public static void main(String[] args) {
+
         // Callable实现的是有返回值的并发，而Runable实现的是没有返回值的情况
         Callable<Integer> callable = () -> ThreadLocalRandom.current().nextInt(100);
 
@@ -26,7 +21,7 @@ public class JavaFuture {
         FutureTask<Integer> future = new FutureTask<>(callable);
         future.run();
 
-        printFutureResult(future);
+        FutureUtils.printFutureResult(future);
 
 
         /*
@@ -34,7 +29,7 @@ public class JavaFuture {
         ExecutorService threadPool = Executors.newSingleThreadExecutor();
         Future<Integer> future = threadPool.submit(callable);
 
-        printFutureResult(future);
+        FutureUtils.printFutureResult(future);
         threadPool.shutdownNow();
         */
 
@@ -57,15 +52,5 @@ public class JavaFuture {
         }
         threadPool.shutdownNow();
         */
-    }
-
-    private static void printFutureResult(Future future) {
-        try {
-            //Thread.sleep(100);
-            System.out.println(future.get());
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
     }
 }
