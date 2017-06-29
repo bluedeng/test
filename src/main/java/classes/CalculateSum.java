@@ -1,6 +1,7 @@
 package classes;
 
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Logger;
 
 /**
  * Created by DTZ on 2016/10/12 23:03.
@@ -10,13 +11,14 @@ public class CalculateSum extends RecursiveTask<Long> {
     private Long start;
     private Long end;
 
-    public CalculateSum(Long start, Long end) {
+    CalculateSum(Long start, Long end) {
         this.start = start;
         this.end = end;
     }
 
     @Override
     protected Long compute() {
+        Logger.getGlobal().info(Thread.currentThread().toString());
         Long sum = 0L;
         if (end < start) {
             return 0L;

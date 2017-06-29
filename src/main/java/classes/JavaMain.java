@@ -169,7 +169,7 @@ public class JavaMain {
     public static void main(String[] args) throws Exception {
         //System.out.println("Hello from java!");
 
-        //forkJoinPoolTest();
+        forkJoinPoolTest();
 
         //parallelStreamVsRough();
 
