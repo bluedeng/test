@@ -9,6 +9,18 @@ package Utils;
  */
 public class BasicUtils {
 
+    public static void print(Object o) {
+        System.out.print(o);
+    }
+
+    public static void println(Object o) {
+        System.out.println(o);
+    }
+
+    public static void enter() {
+        System.out.println();
+    }
+
     public static Integer sum(Integer x, Integer y) {
         return x + y;
     }
