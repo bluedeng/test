@@ -1,6 +1,6 @@
 // Copyright (C) 2017 Meituan
 // All rights reserved
-package classes.future;
+package Utils;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
