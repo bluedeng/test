@@ -2,10 +2,18 @@
 // All rights reserved
 package classes.stream;
 
+import Utils.BasicUtils;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * @author dengtianzhi
@@ -33,13 +41,17 @@ public class StreamOpt {
         transactions.stream()
                 .filter(transaction -> transaction.getYear() == 2011)
                 .sorted(Comparator.comparingInt(Transaction::getValue))
-                .forEach(System.out::println);
+                .forEach(BasicUtils::println);
+
+        BasicUtils.enter();
 
         //交易员都在哪些不同的城市工作过
         transactions.stream()
                 .map(transaction -> transaction.getTrader().getCity())
                 .distinct()
-                .forEach(System.out::println);
+                .forEach(BasicUtils::println);
+
+        BasicUtils.enter();
 
         //查找所有来自于剑桥的交易员，并按姓名排序
         transactions.stream()
@@ -47,22 +59,56 @@ public class StreamOpt {
                 .filter(trader -> trader.getCity().equals("Cambridge"))
                 .distinct()
                 .sorted(Comparator.comparing(Trader::getName))
-                .forEach(System.out::println);
+                .forEach(BasicUtils::println);
+
+        BasicUtils.enter();
 
         //返回所有交易员的姓名字符串，按字母顺序排序
-        System.out.println(transactions.stream()
+        BasicUtils.println(transactions.stream()
                 .map(transaction -> transaction.getTrader().getName())
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.joining()));
 
+        BasicUtils.enter();
+
         //有没有交易员是在米兰工作的
-        System.out.println(transactions.stream()
+        BasicUtils.println(transactions.stream()
                 .map(Transaction::getTrader)
                 .anyMatch(trader -> trader.getCity().equals("Milan")));
 
+        BasicUtils.enter();
+
         //所有交易中，最高的交易额是多少
-        System.out.println(transactions.stream()
+        BasicUtils.println(transactions.stream()
                 .map(Transaction::getValue)
                 .max(Comparator.comparing(c -> c)));
+
+        BasicUtils.enter();
+
+        //生成1-100范围的IntStream
+        BasicUtils.println(IntStream.rangeClosed(1, 100).filter(i -> i % 2 == 0).count());
+
+        BasicUtils.enter();
+
+        //读文件
+        try(Stream<String> lines = Files.lines(Paths.get("/Users/bluedeng/Downloads/cargo-福利.yaml"))) {
+            lines.flatMap(line -> Arrays.stream(line.split(" ")))
+                    .flatMap(line -> Arrays.stream(line.split(":")))
+                    .distinct()
+                    .forEach(BasicUtils::println);
+        } catch (IOException e) {}
+
+        BasicUtils.enter();
+
+        //无限流模式
+        //Stream.generate(ThreadLocalRandom.current()::nextInt).limit(10).forEach(BasicUtils::println);
+        Stream.iterate(0, i -> i + 2).limit(10).forEach(BasicUtils::println);
+
+        BasicUtils.enter();
+
+        //斐波那契前20个数
+        Stream.iterate(new int[]{1, 1}, intArr -> new int[]{intArr[1], intArr[0] + intArr[1]})
+                .limit(10)
+                .forEach(intArr -> BasicUtils.println(intArr[0]));
     }
 }
