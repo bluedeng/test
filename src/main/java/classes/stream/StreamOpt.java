@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -110,5 +112,29 @@ public class StreamOpt {
         Stream.iterate(new int[]{1, 1}, intArr -> new int[]{intArr[1], intArr[0] + intArr[1]})
                 .limit(10)
                 .forEach(intArr -> BasicUtils.println(intArr[0]));
+
+        BasicUtils.enter();
+
+        BasicUtils.println(transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getTrader))
+                .toString());
+
+        BasicUtils.enter();
+
+        IntSummaryStatistics statistics = transactions.stream().collect(Collectors.summarizingInt(Transaction::getValue));
+        BasicUtils.println(statistics);
+
+        BasicUtils.enter();
+
+        BasicUtils.println(transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getYear, Collectors.groupingBy(Transaction::getTrader))));
+
+        BasicUtils.enter();
+
+        BasicUtils.println(transactions.stream()
+                .collect(Collectors.partitioningBy(transaction -> transaction.getYear() == 2011,
+                        Collectors.groupingBy(Transaction::getTrader))));
+
+        BasicUtils.enter();
     }
 }
