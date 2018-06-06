@@ -1,5 +1,3 @@
-// Copyright (C) 2017 Meituan
-// All rights reserved
 package classes.newDateAPI;
 
 import java.time.DayOfWeek;
