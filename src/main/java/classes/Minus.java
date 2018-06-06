@@ -1,5 +1,4 @@
-package classes;// Copyright (C) 2016 Meituan
-// All rights reserved
+package classes;
 
 import traites.MinusTrait;
 
