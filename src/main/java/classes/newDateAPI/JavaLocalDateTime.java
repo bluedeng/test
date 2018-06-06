@@ -6,7 +6,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.Date;
+import java.util.Locale;
 
 import static Utils.BasicUtils.enter;
 import static Utils.BasicUtils.println;
@@ -23,7 +27,9 @@ public class JavaLocalDateTime {
         localDateExample();
         localTimeExample();
         localDateTimeExample();
-        temporalAdjuster();
+        temporalAdjusterExample();
+        localDateTimeInteractWithDateExample();
+        localDateParseExample();
     }
 
     private static void localDateExample() {
@@ -88,13 +94,48 @@ public class JavaLocalDateTime {
         enter();
     }
 
-    private static void temporalAdjuster() {
+    private static void temporalAdjusterExample() {
         LocalDate date = LocalDate.now();
         println("DATE: " + date);
         println("NEXT OR THIS SUNDAY: " + date.with(nextOrSame(DayOfWeek.SUNDAY)));
         println("LAST DAY OF MONTH: " + date.with(lastDayOfMonth()));
         println("FIRST DAY OF NEXT MONTH: " + date.with(firstDayOfNextMonth()));
         println("NEXT WORKING DAY: " + date.with(LocalDateTimeUtils.nextWorkDay));
+        enter();
+    }
+
+    private static void localDateTimeInteractWithDateExample() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Date date = new Date();
+        println("LOCAL DATE TIME: " + localDateTime);
+        println("DATE: " + date);
+        LocalDateTime convertDateTime = LocalDateTimeUtils.convert2LocalDateTime(date);
+        Date convertDate = LocalDateTimeUtils.convert2Date(localDateTime);
+        println("DATE 2 LOCAL DATE TIME: " + convertDateTime);
+        println("LOCAL DATE TIME 2 DATE: " + convertDate);
+        //转换可能丢失精度，造成LocalDateTime.now()与new Date()不等
+        println(localDateTime.equals(convertDateTime));
+        println(date.equals(convertDate));
+        enter();
+    }
+
+    private static void localDateParseExample() {
+        LocalDate localDate = LocalDate.now();
+        println("LOCAL DATE NOW: " + localDate);
+        println("FORMAT 2 STRING: " + localDate.format(DateTimeFormatter.BASIC_ISO_DATE));
+        println("FORMAT 2 LOCAL DATE: " + LocalDate.parse("2018-06-06", DateTimeFormatter.ISO_LOCAL_DATE));
+
+        DateTimeFormatter customFormatter1 = DateTimeFormatter.ofPattern("dd=MM=yyyy");
+        println("CUSTOM FORMATTER: " + localDate.format(customFormatter1));
+
+        DateTimeFormatter customFormatter2 = new DateTimeFormatterBuilder()
+                .appendText(ChronoField.DAY_OF_MONTH)
+                .appendLiteral("~~")
+                .appendText(ChronoField.MONTH_OF_YEAR)
+                .appendLiteral("--")
+                .appendText(ChronoField.YEAR)
+                .toFormatter(Locale.CHINA);
+        println("CUSTOM FORMATTER: " + localDate.format(customFormatter2));
         enter();
     }
 }
