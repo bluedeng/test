@@ -60,4 +60,12 @@ public class BasicUtils {
         }
         return returnStr;
     }
+
+    public static void sleep(Integer second) {
+        try {
+            Thread.sleep(second * 1000L);
+        } catch (Exception e) {
+            //
+        }
+    }
 }
