@@ -1,9 +1,12 @@
 package classes.caffeine;
 
+import classes.JavaEmail;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static Utils.BasicUtils.println;
@@ -19,12 +22,20 @@ public class JavaCaffeine {
     public static void main(String... args) {
 //        println("test no record stat: ");
 //        testNumericCache(numericCacheWithoutRecordStat);
+
 //        println("\ntest record stat: ");
 //        testNumericCache(numericCacheWithRecordStat);
+
 //        println("\ntest expire after access:");
 //        testNumericCache(numericCacheWithExpireAfterAccess);
-        println("\ntest maximum size:");
-        testMaximumSize();
+
+//        println("\ntest maximum size:");
+//        testMaximumSize();
+
+//        println("\ntest loading cache");
+//        testLoadingCache();
+        println("\ntest object cache");
+        testObjectCache();
     }
 
     /**
@@ -59,6 +70,14 @@ public class JavaCaffeine {
      * initial cache, which set maximum size
      */
     private static Cache<Integer, Integer> numericCacheWithMaximumSize = Caffeine.newBuilder()
+            .maximumSize(10)
+            .build();
+
+    private static LoadingCache<Integer, Integer> numericLoadingCache = Caffeine.newBuilder()
+            .maximumSize(10)
+            .build(key -> key);
+
+    private static Cache<Object, Object> objectCache = Caffeine.newBuilder()
             .maximumSize(10)
             .build();
 
@@ -105,8 +124,51 @@ public class JavaCaffeine {
             cache.put(i, i);
             println(cache.getIfPresent(ThreadLocalRandom.current().nextInt(20)));
             println(cache.asMap() + "_" + cache.asMap().size());
+//            sleep(1);
+            i++;
+        }
+
+        while (i < 25) {
+            cache.put(i, i);
+            sleep(1);
+            println(cache.asMap() + "_" + cache.asMap().size());
+            i++;
+        }
+    }
+
+    private static void testLoadingCache() {
+        LoadingCache<Integer, Integer> loadingCache = numericLoadingCache;
+        println(loadingCache.asMap());
+        int i = 1;
+        while (i < 30) {
+            println(i + "_" + loadingCache.get(ThreadLocalRandom.current().nextInt(i)));
+            println(loadingCache.asMap() + "_" + loadingCache.asMap().size());
             sleep(1);
             i++;
+        }
+    }
+
+    private static void testObjectCache() {
+        int i = 1;
+        while (i < 20) {
+            Object value = objectCache.get(ThreadLocalRandom.current().nextInt(), JavaCaffeine::resolveValue);
+            println(value + "_" + value.getClass());
+            println(i + "_" + objectCache.asMap() + "_" + objectCache.asMap().size());
+            i++;
+            sleep(1);
+        }
+    }
+
+    private static Object resolveValue(Object obj) {
+        int hashCode = obj.hashCode();
+        if (hashCode % 5 == 0) {
+            return 5;
+        } else if (hashCode % 3 == 0) {
+            return "" + hashCode;
+        } else if (hashCode % 2 == 0) {
+            return CompletableFuture.supplyAsync(() -> hashCode);
+        } else {
+            return new JavaEmail("java", "email");
         }
     }
 }
